@@ -1,35 +1,36 @@
-import { Folder, More, MoreVert, } from "@mui/icons-material";
+import { Folder as FolderIcon, More, MoreVert } from "@mui/icons-material";
 import { Box, IconButton } from "@mui/material";
 import React from "react";
+import { Folder, useDashboardHook } from "../../api/dashboard/useDashboardHook";
 
-type Props = {};
+type Props = {
+ folders: Folder[];
+};
 
 const FolderList = (props: Props) => {
  return (
   <Box
    sx={{
-    // display: "flex",
-    // flexDirection: "row",
-
-       display: "grid",
+    display: "grid",
     gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-
     gap: "1rem",
     padding: "10px",
-		paddingLeft: 0,
-		flexWrap: "wrap",
+    paddingLeft: 0,
+    flexWrap: "wrap",
    }}
   >
-   {Array(20)
-    .fill(0)
-    .map((el) => (
-     <FolderItem />
-    ))}
+   {props.folders.map((el) => (
+    <FolderItem key={el._id} folder={el} />
+   ))}
   </Box>
  );
 };
 
-const FolderItem = () => {
+type FolderItemProps = {
+ folder: Folder;
+};
+
+const FolderItem = (props: FolderItemProps) => {
  return (
   <Box
    sx={{
@@ -46,8 +47,8 @@ const FolderItem = () => {
     },
    }}
   >
-   <Folder />
-   <Box sx={{ flex: 1 }}>Folder Name</Box>
+   <FolderIcon />
+   <Box sx={{ flex: 1 }}>{props.folder.name}</Box>
    <IconButton>
     <MoreVert />
    </IconButton>

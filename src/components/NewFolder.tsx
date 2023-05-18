@@ -2,20 +2,31 @@ import { Box, Dialog, Button, DialogActions, DialogContent, DialogTitle, TextFie
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { setNewFolder } from "../store/slices/modal.slice";
+import { useFolderCreateHook } from "../api/folder/useFolderHook";
+import handleError from "../utils/handleError";
 
 type Props = {};
 
 const NewFolder = (props: Props) => {
  const { newFolder } = useAppSelector((state) => state.modal);
  const dispatch = useAppDispatch();
+ const createFolder = useFolderCreateHook();
 
  const [folderName, setFolderName] = useState<string>("");
 
  const handleClose = () => {
+  if (createFolder.isLoading) return;
   dispatch(setNewFolder(false));
  };
 
-	const handleCreate = () => { }
+ const handleCreate = async () => {
+  try {
+   await createFolder.mutateAsync({ name: folderName, parent: null });
+   handleClose();
+  } catch (error) {
+   handleError(error);
+  }
+ };
 
  return (
   <Dialog open={newFolder}>

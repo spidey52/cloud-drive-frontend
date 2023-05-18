@@ -1,8 +1,10 @@
 import { Folder, MoreVert } from "@mui/icons-material";
 import { Box, IconButton } from "@mui/material";
-import React from "react";
+import { File } from "../../api/dashboard/useDashboardHook";
 
-type Props = {};
+type Props = {
+ files: File[];
+};
 
 const FileList = (props: Props) => {
  return (
@@ -16,16 +18,18 @@ const FileList = (props: Props) => {
     flexWrap: "wrap",
    }}
   >
-   {Array(20)
-    .fill(0)
-    .map((el) => (
-     <FileItem />
-    ))}
+   {props.files.map((el) => (
+    <FileItem file={el} />
+   ))}
   </Box>
  );
 };
 
-const FileItem = () => {
+type FileItemProps = {
+ file: File;
+};
+
+const FileItem = (props: FileItemProps) => {
  return (
   <Box
    sx={{
@@ -50,7 +54,7 @@ const FileItem = () => {
     }}
    >
     <Folder />
-    <Box sx={{ flex: 1 }}>File Name</Box>
+    <Box sx={{ flex: 1 }}>{props.file.name}</Box>
     <IconButton>
      <MoreVert />
     </IconButton>

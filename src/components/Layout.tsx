@@ -1,12 +1,15 @@
-import { Box, Typography } from "@mui/material";
-import React from "react";
+import { Box, Typography, Link } from "@mui/material";
+import React, { useEffect } from "react";
 import MyDrawer, { DrawerHeader, Main } from "./MyDrawer";
-import { Outlet, useOutlet } from "react-router-dom";
+import { Link as RouterLink, Outlet, redirect, useLocation, useOutlet } from "react-router-dom";
+import { Height } from "@mui/icons-material";
 
 type Props = {};
 
 const Layout = () => {
+ const location = useLocation();
  const outlet = useOutlet();
+
  const [open, setOpen] = React.useState(true);
 
  return (
@@ -24,23 +27,28 @@ const PageNotFound = () => {
  return (
   <Box
    sx={{
-			 width: "100%",
-			 height: "100%",
-			 display: "flex",
-			 justifyContent: "center",
-			 alignItems: "center",
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
    }}
   >
-   <img
-    src='/404.jpg'
-    alt='404 not found'
-    style={{
-    //  maxHeight: "100%",
-			height: "100%",
-			width: "100%",
-			objectFit: "fill",
-    }}
-   />
+   <Box>
+    <img
+     src='/404.jpg'
+     alt='404 not found'
+     style={{
+      width: "400px",
+      height: "400px",
+     }}
+    />
+   </Box>
+
+   <Link to='/dashboard' component={RouterLink}>
+    Go to Dashboard
+   </Link>
   </Box>
  );
 };
