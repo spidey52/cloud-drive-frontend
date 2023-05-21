@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { folderUrl } from "../../utils/apiEndpoint";
 
@@ -12,9 +12,12 @@ export const useFolderCreateHook = () => {
   return await axios.post(folderUrl, folder);
  };
 
+ const queryClient = useQueryClient();
+
  return useMutation(createFolder, {
   onSuccess: () => {
    console.log("success");
+   queryClient.invalidateQueries(["dashboard"]);
   },
  });
 };

@@ -1,7 +1,10 @@
 import { Folder as FolderIcon, More, MoreVert } from "@mui/icons-material";
 import { Box, IconButton } from "@mui/material";
 import React from "react";
-import { Folder, useDashboardHook } from "../../api/dashboard/useDashboardHook";
+import { useDashboardHook } from "../../api/dashboard/useDashboardHook";
+import { Folder } from "../../types";
+import { useAppDispatch } from "../../store/hooks";
+import { addBreadcrumb } from "../../store/slices/breadcrumb.slice";
 
 type Props = {
  folders: Folder[];
@@ -31,6 +34,12 @@ type FolderItemProps = {
 };
 
 const FolderItem = (props: FolderItemProps) => {
+ const dispatch = useAppDispatch();
+
+ const handleDoubleClick = () => {
+  dispatch(addBreadcrumb(props.folder));
+ };
+
  return (
   <Box
    sx={{
@@ -45,7 +54,9 @@ const FolderItem = (props: FolderItemProps) => {
      backgroundColor: "#ccc",
      cursor: "pointer",
     },
+    userSelect: "none",
    }}
+   onDoubleClick={handleDoubleClick}
   >
    <FolderIcon />
    <Box sx={{ flex: 1 }}>{props.folder.name}</Box>

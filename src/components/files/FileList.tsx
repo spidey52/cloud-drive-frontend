@@ -1,6 +1,7 @@
 import { Folder, MoreVert } from "@mui/icons-material";
-import { Box, IconButton } from "@mui/material";
-import { File } from "../../api/dashboard/useDashboardHook";
+import { Box, Icon, IconButton, Paper, SvgIcon, Tooltip } from "@mui/material";
+import { File } from "../../types";
+import iconsMapping from "../../utils/iconsMapping";
 
 type Props = {
  files: File[];
@@ -15,7 +16,6 @@ const FileList = (props: Props) => {
     gap: "1rem",
     padding: "10px",
     paddingLeft: 0,
-    flexWrap: "wrap",
    }}
   >
    {props.files.map((el) => (
@@ -30,6 +30,13 @@ type FileItemProps = {
 };
 
 const FileItem = (props: FileItemProps) => {
+ //  return (
+ //   <div className="file-container">
+ //    <div className='upper-section'></div>
+ //    <div className='icon-section'></div>
+ //   </div>
+ //  );
+
  return (
   <Box
    sx={{
@@ -50,21 +57,43 @@ const FileItem = (props: FileItemProps) => {
     sx={{
      display: "flex",
      alignItems: "center",
+     justifyContent: "center",
      gap: "10px",
     }}
    >
-    <Folder />
-    <Box sx={{ flex: 1 }}>{props.file.name}</Box>
+    <Icon
+     fontSize='medium'
+     sx={{
+      color: "#000",
+      paddingBottom: "30px",
+     }}
+    >
+     <img src={iconsMapping[props.file.file_type as keyof typeof iconsMapping]} alt='file icon' />
+    </Icon>
+
+    <Tooltip title={props.file.name} arrow>
+     <Box
+      sx={{
+       flex: 1,
+       overflow: "hidden",
+       textOverflow: "ellipsis",
+      }}
+     >
+      {props.file.name}
+     </Box>
+    </Tooltip>
     <IconButton>
      <MoreVert />
     </IconButton>
    </Box>
 
    <Box
+    className='file-icon'
     sx={{
-     backgroundColor: "#fff",
-     borderRadius: "5px",
-     margin: "2px",
+     backgroundImage: `url(${iconsMapping[props.file.file_type as keyof typeof iconsMapping]})`,
+     backgroundRepeat: "no-repeat",
+     backgroundSize: "contain",
+     backgroundPosition: "center",
      flex: 1,
     }}
    ></Box>

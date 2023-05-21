@@ -9,6 +9,7 @@ type Props = {};
 
 const NewFolder = (props: Props) => {
  const { newFolder } = useAppSelector((state) => state.modal);
+ const { breadcrumb } = useAppSelector((state) => state.breadcrumb);
  const dispatch = useAppDispatch();
  const createFolder = useFolderCreateHook();
 
@@ -21,7 +22,10 @@ const NewFolder = (props: Props) => {
 
  const handleCreate = async () => {
   try {
-   await createFolder.mutateAsync({ name: folderName, parent: null });
+   await createFolder.mutateAsync({
+    name: folderName,
+    parent: breadcrumb?._id || null,
+   });
    handleClose();
   } catch (error) {
    handleError(error);

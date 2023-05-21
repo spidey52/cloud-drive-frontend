@@ -18,6 +18,7 @@ const NewMenuItem = ({ anchorEl, setAnchorEl }: NewMenuItemProps) => {
  };
 
  const handleNewFolder = () => {
+  handleClose();
   dispatch(setNewFolder(true));
  };
 

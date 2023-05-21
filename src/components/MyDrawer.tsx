@@ -23,6 +23,8 @@ import Layout from "./Layout";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import NewMenuItem from "./NewMenuItem";
+import { Link }  from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -121,13 +123,15 @@ export default function MyDrawer({ open, setOpen }: Props) {
     <SideBarNewButton />
 
     <List>
-     {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-      <ListItem key={text} disablePadding>
-       <ListItemButton>
-        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-        <ListItemText primary={text} />
-       </ListItemButton>
-      </ListItem>
+     {["dashboard", "Starred", "Send email", "Drafts"].map((text, index) => (
+      <Link>
+       <ListItem key={text} disablePadding>
+        <ListItemButton>
+         <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+         <ListItemText primary={text} />
+        </ListItemButton>
+       </ListItem>
+      </Link>
      ))}
     </List>
     <Divider />

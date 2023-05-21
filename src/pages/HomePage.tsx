@@ -1,20 +1,21 @@
-import { Box, Drawer, Typography } from "@mui/material";
+import { Box, CircularProgress, Drawer, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Title from "../components/Title";
 import FolderList from "../components/folders/FolderList";
 import FileList from "../components/files/FileList";
 import MyBreadCrumb from "../components/MyBreadcrumb/MyBreadCrumb";
 import { useDashboardHook } from "../api/dashboard/useDashboardHook";
+import { useAppSelector } from "../store/hooks";
+import iconsMapping from "../utils/iconsMapping";
 
 type Props = {};
 
 const HomePage = (props: Props) => {
  const [list, setList] = useState<string[]>([]);
- const [isCollpsible, setIsCollapsible] = useState<boolean>(true);
 
- const { data } = useDashboardHook();
+ const { breadcrumb } = useAppSelector((state) => state.breadcrumb);
 
- console.log(data);
+ const { data, isLoading, isRefetching } = useDashboardHook({ folderId: breadcrumb?._id });
 
  useEffect(() => {
   setList(["Home", "Folder1", "Folder2", "Folder3"]);
@@ -26,11 +27,26 @@ const HomePage = (props: Props) => {
   <Box>
    <MyBreadCrumb list={list} handleClick={handleClick} />
 
-   <Title title='Folders' />
-   <FolderList folders={data?.folders || []} />
+   {isLoading ? (
+    <Box
+     sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: "40px",
+     }}
+    >
+     <CircularProgress />
+    </Box>
+   ) : (
+    <>
+     {data?.folders.length ? <Title title='Folders' /> : null}
+     <FolderList folders={data?.folders || []} />
 
-   <Title title='Files' />
-   <FileList files={data?.files || []} />
+     {data?.files.length ? <Title title='Files' /> : null}
+     <FileList files={data?.files || []} />
+    </>
+   )}
   </Box>
  );
 };
