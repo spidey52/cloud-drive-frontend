@@ -32,6 +32,12 @@ const iconsMapping = {
  ".rs": "/icons/rust.svg",
 
  ".pdf": "/icons/pdf.svg",
+ ".png": "/icons/image.svg",
+ ".jpg": "/icons/image.svg",
+ ".jpeg": "/icons/image.svg",
+ ".gif": "/icons/image.svg",
+ ".svg": "/icons/image.svg",
+ ".ico": "/icons/image.svg",
 };
 
 export default iconsMapping;

@@ -1,7 +1,11 @@
-import { ContentCut, CreateNewFolder, DriveFolderUpload, FileUpload, UploadFile } from "@mui/icons-material";
-import { ListItemIcon, Divider, ListItemText, Menu, MenuItem, MenuList, Typography } from "@mui/material";
+import { CreateNewFolder, DriveFolderUpload, UploadFile } from "@mui/icons-material";
+import { ListItemIcon, Divider, ListItemText, Menu, MenuItem, MenuList } from "@mui/material";
 import { useAppDispatch } from "../store/hooks";
 import { setNewFolder } from "../store/slices/modal.slice";
+import { useRef } from "react";
+import { useFileUploadHook } from "../api/folder/useFolderHook";
+import handleError from "../utils/handleError";
+import { toast } from "react-toastify";
 
 type NewMenuItemProps = {
  anchorEl: null | HTMLElement;
@@ -13,6 +17,9 @@ const NewMenuItem = ({ anchorEl, setAnchorEl }: NewMenuItemProps) => {
 
  const dispatch = useAppDispatch();
 
+ const fileRef = useRef<HTMLInputElement>(null);
+ const uploadFile = useFileUploadHook();
+
  const handleClose = () => {
   setAnchorEl(null);
  };
@@ -20,6 +27,26 @@ const NewMenuItem = ({ anchorEl, setAnchorEl }: NewMenuItemProps) => {
  const handleNewFolder = () => {
   handleClose();
   dispatch(setNewFolder(true));
+ };
+
+ const handleFileUpload = async () => {
+  if (!fileRef.current) return;
+
+  try {
+   const file = fileRef.current.files?.[0];
+
+   if (!file) return;
+
+   const formData = new FormData();
+   formData.append("file", file);
+
+   await uploadFile.mutateAsync(formData);
+   toast.success("File uploaded successfully");
+  } catch (error) {
+   handleError(error);
+  }
+
+  handleClose();
  };
 
  return (
@@ -44,27 +71,20 @@ const NewMenuItem = ({ anchorEl, setAnchorEl }: NewMenuItemProps) => {
        <CreateNewFolder fontSize='small' />
       </ListItemIcon>
       <ListItemText>New Folder</ListItemText>
-      {/* <Typography variant='body2' color='text.secondary'>
-       ⌘X
-      </Typography> */}
      </MenuItem>
 
      <Divider />
 
-     <MenuItem
-      onClick={handleClose}
-      sx={{
-       minWidth: "240px",
-      }}
-     >
-      <ListItemIcon>
-       <UploadFile fontSize='small' />
-      </ListItemIcon>
-      <ListItemText>File Upload</ListItemText>
-      {/* <Typography variant='body2' color='text.secondary'>
-       CTRL + N
-      </Typography> */}
-     </MenuItem>
+     <input type='file' style={{ display: "none" }} id='file-item' ref={fileRef} onChange={handleFileUpload} />
+
+     <label htmlFor='file-item'>
+      <MenuItem onClick={handleFileUpload} sx={{ minWidth: "240px" }}>
+       <ListItemIcon>
+        <UploadFile fontSize='small' />
+       </ListItemIcon>
+       <ListItemText>File Upload</ListItemText>
+      </MenuItem>
+     </label>
 
      <MenuItem
       onClick={handleClose}
@@ -76,10 +96,6 @@ const NewMenuItem = ({ anchorEl, setAnchorEl }: NewMenuItemProps) => {
        <DriveFolderUpload fontSize='small' />
       </ListItemIcon>
       <ListItemText>Folder Upload</ListItemText>
-
-      {/* <Typography variant='body2' color='text.secondary'>
-       ⌘X
-      </Typography> */}
      </MenuItem>
     </MenuList>
    </Menu>

@@ -20,45 +20,8 @@
 }
 
 
-.file-icon {
-	background-color: #fff;
-	/* padding: 5px; */
-	margin: 2px;
-	background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698394-icon-130-cloud-upload-512.png);
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: cover
-}
-
-.file-container {
-	height: 250px;
-	width: 250px;
-	border: 1px solid black;
-	border-radius: 5px;
-}
-
-.file-container:hover {
-	border: 1px solid #0000ff;
-}
-
-
-.file-container .upper-section {
-	height: 40px;
+/* .modal-image {
 	width: 100%;
-	/* border: 1px solid red; */
-}
-
-.file-container .icon-section {
-	height: calc(100% - 40px);
-	border: 1px solid red;
-	background-image: url("/icons/pdf.svg");
-	background-repeat: no-repeat;
-	background-size: contain;
-	background-position: center center;
-
-	background-repeat: no-repeat;
-	background-position: 0% 0%;
-	background-size: 100% 100%;
-	overflow: hidden !important;
-
-}
+	height: 100%;
+	object-fit: cover;
+} */

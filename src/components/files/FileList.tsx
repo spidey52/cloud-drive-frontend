@@ -2,6 +2,10 @@ import { Folder, MoreVert } from "@mui/icons-material";
 import { Box, Icon, IconButton, Paper, SvgIcon, Tooltip } from "@mui/material";
 import { File } from "../../types";
 import iconsMapping from "../../utils/iconsMapping";
+import { useAppDispatch } from "../../store/hooks";
+import { setImage, setPdf, setText } from "../../store/slices/modal.slice";
+import { getFileType, getFileIcon } from "../../utils/fileHelper";
+import { fileUrl } from "../../utils/apiEndpoint";
 
 type Props = {
  files: File[];
@@ -29,16 +33,26 @@ type FileItemProps = {
  file: File;
 };
 
-const FileItem = (props: FileItemProps) => {
- //  return (
- //   <div className="file-container">
- //    <div className='upper-section'></div>
- //    <div className='icon-section'></div>
- //   </div>
- //  );
+const FileItem = ({ file }: FileItemProps) => {
+ const dispatch = useAppDispatch();
+
+ const handleFileClick = () => {
+  if (getFileType(file.file_type) === "image") {
+   dispatch(setImage(file._id));
+  }
+
+  if (getFileType(file.file_type) === "text") {
+   dispatch(setText(file));
+  }
+
+  if (getFileType(file.file_type) === "pdf") {
+   window.open(`${fileUrl}/${file._id}`);
+  }
+ };
 
  return (
   <Box
+   onClick={handleFileClick}
    sx={{
     width: 250,
     height: 250,
@@ -68,10 +82,10 @@ const FileItem = (props: FileItemProps) => {
       paddingBottom: "30px",
      }}
     >
-     <img src={iconsMapping[props.file.file_type as keyof typeof iconsMapping]} alt='file icon' />
+     <img src={iconsMapping[file.file_type as keyof typeof iconsMapping]} alt='file icon' />
     </Icon>
 
-    <Tooltip title={props.file.name} arrow>
+    <Tooltip title={file.name} arrow>
      <Box
       sx={{
        flex: 1,
@@ -79,7 +93,7 @@ const FileItem = (props: FileItemProps) => {
        textOverflow: "ellipsis",
       }}
      >
-      {props.file.name}
+      {file.name}
      </Box>
     </Tooltip>
     <IconButton>
@@ -90,7 +104,7 @@ const FileItem = (props: FileItemProps) => {
    <Box
     className='file-icon'
     sx={{
-     backgroundImage: `url(${iconsMapping[props.file.file_type as keyof typeof iconsMapping]})`,
+     backgroundImage: `url(${getFileIcon(file.file_type)})`,
      backgroundRepeat: "no-repeat",
      backgroundSize: "contain",
      backgroundPosition: "center",

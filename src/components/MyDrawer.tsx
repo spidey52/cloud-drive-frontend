@@ -23,8 +23,8 @@ import Layout from "./Layout";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import NewMenuItem from "./NewMenuItem";
-import { Link }  from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link } from "@mui/material";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -80,6 +80,7 @@ type Props = {
 
 export default function MyDrawer({ open, setOpen }: Props) {
  const theme = useTheme();
+  const navigate = useNavigate();
 
  const handleDrawerOpen = () => {
   setOpen(true);
@@ -88,6 +89,7 @@ export default function MyDrawer({ open, setOpen }: Props) {
  const handleDrawerClose = () => {
   setOpen(false);
  };
+
 
  return (
   <Box sx={{ display: "flex" }}>
@@ -124,14 +126,16 @@ export default function MyDrawer({ open, setOpen }: Props) {
 
     <List>
      {["dashboard", "Starred", "Send email", "Drafts"].map((text, index) => (
-      <Link>
-       <ListItem key={text} disablePadding>
-        <ListItemButton>
-         <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-         <ListItemText primary={text} />
-        </ListItemButton>
-       </ListItem>
-      </Link>
+      <ListItem key={text} disablePadding>
+         <ListItemButton selected={text === "dashboard"}
+           onClick={() => { 
+             navigate("/dashboard");
+           }}
+         >
+        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+        <ListItemText primary={text} />
+       </ListItemButton>
+      </ListItem>
      ))}
     </List>
     <Divider />

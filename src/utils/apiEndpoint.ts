@@ -8,4 +8,5 @@ export const verifyUrl = `${baseUrl}/verify`;
 export const userUrl = `${baseUrl}/user`;
 
 export const folderUrl = `${baseUrl}/folders`;
+export const fileUrl = `${baseUrl}/files`;
 export const dashboardUrl = `${baseUrl}/dashboard`;
